@@ -2,6 +2,7 @@
 
 import { createCollectionSchemaType } from "@/schema/createCollection";
 import { currentUser } from "@clerk/nextjs";
+import prisma from "@/lib/prisma";
 
 export async function createCollection(form: createCollectionSchemaType) {
   const user = await currentUser();
@@ -10,7 +11,7 @@ export async function createCollection(form: createCollectionSchemaType) {
     throw new Error("User not found")
   }
 
-  return await prisma?.collection.create({
+  return await prisma.collection.create({
     data: {
       userId: user.id,
       color: form.color,
@@ -26,7 +27,7 @@ export async function deleteCollection(id: number) {
     throw new Error("User not found")
   }
 
-  return await prisma?.collection.delete({
+  return await prisma.collection.delete({
     where: {
       userId: user.id,
       id: id

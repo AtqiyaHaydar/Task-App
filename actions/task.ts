@@ -2,6 +2,7 @@
 
 import { createTaskSchemaType } from "@/schema/createTask";
 import { currentUser } from "@clerk/nextjs";
+import prisma from "@/lib/prisma";
 
 export async function createTask(data: createTaskSchemaType) {
   const user = await currentUser()
@@ -12,7 +13,7 @@ export async function createTask(data: createTaskSchemaType) {
 
   const {content, expiredAt, collectionId} = data
 
-  return await prisma?.task.create({
+  return await prisma.task.create({
     data: {
       userId: user.id,
       content,
@@ -33,7 +34,7 @@ export async function setTaskToDone(id: number) {
     throw new Error("User not found")
   }
 
-  return await prisma?.task.update({
+  return await prisma.task.update({
     where: {
       id: id,
       userId: user.id
